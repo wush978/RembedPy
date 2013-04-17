@@ -1,0 +1,4 @@
+exportClasses("py-ptr")
+export(.Last.lib)
+export(py)
+useDynLib(RembedPy)
