@@ -13,3 +13,4 @@ LinkingTo: Rcpp
 Collate:
     'zzz.R'
     'py.R'
+    'py-ptr.class.R'
