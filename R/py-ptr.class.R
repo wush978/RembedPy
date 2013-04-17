@@ -7,16 +7,15 @@ setClass(
 setMethod(
   "initialize",
   "py-ptr",
-  def = function(.Object, src) {
-    .Object@ptr = switch(
-      class(src),
-      "character" = .pystr(src),
-      "integer" = .pylong(src),
-      "logical" = .pybool(src),
-      "numeric" = .pydouble(src),
-      "list" = .pylist(src),
-      stop("Invalid type")
-      )
+  def = function(.Object, src, is_pyobj = FALSE, module_name = "__main__") {
+		stopifnot(class(is_pyobj) == "logical")
+  	if (is_pyobj) {
+  		stopifnot(class(src) == "character")
+  		stopifnot(class(module_name) == "character")
+  		.Object@ptr <- .Call("RembedPy__extract", module_name[1], src[1])
+  	} else {
+    	.Object@ptr <- .RtoPy(src)
+  	}
     .Object
   }
   )
