@@ -10,4 +10,6 @@
 typedef Rcpp::XPtr< boost::python::object > PyObjPtr;
 typedef Rcpp::XPtr< boost::python::list > PyListPtr;
 
+#define REMBEDPY_DEBUG
+
 #endif //__REMBEDPY_H__
