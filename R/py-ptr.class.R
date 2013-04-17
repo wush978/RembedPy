@@ -14,7 +14,11 @@ setMethod(
   		stopifnot(class(module_name) == "character")
   		.Object@ptr <- .Call("RembedPy__extract", module_name[1], src[1])
   	} else {
-    	.Object@ptr <- .RtoPy(src)
+  		if (class(src) == "externalptr") {
+  			.Object@ptr <- src
+  		} else {
+    		.Object@ptr <- .RtoPy(src)
+  		}
   	}
     .Object
   }
