@@ -5,11 +5,8 @@
 #include <Rcpp.h>
 
 struct PyoutCatcher {
-  PyObject* write(PyObject* self, PyObject *args) {
-    const char* string;
-    if (PyArg_ParseTuple(args, "s", &string)) {
-      Rcpp::Rcout << string;
-    }
+  PyObject* write(std::string str) {
+    Rcpp::Rcout << str;
     Py_INCREF(Py_None);
     return Py_None;
   }

@@ -12,3 +12,4 @@ Depends:
 LinkingTo: Rcpp
 Collate:
     'zzz.R'
+    'py.R'
