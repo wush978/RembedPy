@@ -1,0 +1,5 @@
+PKG_LIBS = `$(R_HOME)/bin/Rscript -e "Rcpp:::LdFlags()"` -lboost_python-py27 `python2.7-config --ldflags`
+
+PKG_CFLAGS = `python2.7-config --cflags`
+PKG_CXXFLAGS = `python2.7-config --cflags`
+
