@@ -23,3 +23,14 @@ setMethod(
     .Object
   }
   )
+
+setMethod(
+  "$",
+  "py-ptr",
+  def = function(x, name) {
+    function(...) {
+      argv <- check_argv(list(...))
+      new("py-ptr", .Call("RembedPy__method", x@ptr, name, argv$list, argv$dict))
+    }
+  }
+  )
