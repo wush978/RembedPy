@@ -7,8 +7,11 @@
 #define BEGIN_REMBEDPY try {
 #define END_REMBEDPY } catch(boost::python::error_already_set) { ::PyErr_Print(); VOID_END_RCPP return R_NilValue;
 
-typedef Rcpp::XPtr< boost::python::object > PyObjPtr;
-typedef Rcpp::XPtr< boost::python::list > PyListPtr;
+
+namespace RembedPy {
+	typedef Rcpp::XPtr< boost::python::object > PyObjPtr;
+	typedef Rcpp::XPtr< boost::python::list > PyListPtr;
+}
 
 // #define REMBEDPY_DEBUG
 

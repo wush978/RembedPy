@@ -18,9 +18,10 @@ BOOST_PYTHON_MODULE(redirectR) {
   ;
 }
 
+
 RcppExport SEXP RembedPy__initialize() {
   BEGIN_RCPP
-  ::Py_SetProgramName("Rython");
+  ::Py_SetProgramName("RembedPy");
 #ifndef WIN32
   ::dlopen("libpython2.7.so", RTLD_LAZY | RTLD_GLOBAL);
 #endif

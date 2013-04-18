@@ -24,6 +24,11 @@ setMethod(
   }
   )
 
+#'@export
+pyobj <- function(obj_name, module_name = "__main__") {
+	new("py-ptr", obj_name, is_pyobj=TRUE, module_name = module_name)
+}
+
 setMethod(
   "$",
   "py-ptr",

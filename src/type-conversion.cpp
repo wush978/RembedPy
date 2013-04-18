@@ -1,5 +1,7 @@
 #include "rembedpy.h"
 
+using RembedPy::PyObjPtr;
+using RembedPy::PyListPtr;
 
 template <int RTYPE, class T>
 SEXP RtoPy(SEXP Rsrc) {
