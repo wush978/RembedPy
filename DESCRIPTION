@@ -9,10 +9,12 @@ Description: Embed python into R. The data exchange is using Rcpp and
     boost.python
 License: GPL(>= 3)
 Depends:
-    Rcpp (>= 0.10.3)
+    Rcpp (>= 0.10.3),
+    methods
 LinkingTo: Rcpp
 Collate:
     'zzz.R'
     'py.R'
     'py-ptr.class.R'
     'type-conversion.R'
+    'util.R'
