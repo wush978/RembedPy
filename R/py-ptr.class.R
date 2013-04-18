@@ -39,7 +39,8 @@ setMethod("[",
   signature(x = "py-ptr"),
   function (x, i, j, ..., drop = TRUE) {
     if (missing(i)) {
-      stop("TODO: extract R object")
+      retval <- .Call("RembedPy__toR", x@ptr)
+      return(retval)
     }
     if (class(i) == "character") {
       ptr <- .Call("RembedPy__getattr", x@ptr, i[1])
