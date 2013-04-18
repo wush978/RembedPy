@@ -34,3 +34,25 @@ setMethod(
     }
   }
   )
+
+setMethod("[",
+  signature(x = "py-ptr"),
+  function (x, i, j, ..., drop = TRUE) {
+    if (missing(i)) {
+      stop("TODO: extract R object")
+    }
+    if (class(i) == "character") {
+      ptr <- .Call("RembedPy__getattr", x@ptr, i[1])
+      if (is.null(ptr)) return(NULL)
+      return(new("py-ptr", ptr))
+    }
+  }
+)
+
+setMethod("show",
+  signature(object = "py-ptr"),
+  function (object) 
+  {
+    cat(sprintf("A python object of python type: \"%s\"\n", .Call("RembedPy__gettype", object@ptr)))
+  }
+)

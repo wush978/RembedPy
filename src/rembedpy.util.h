@@ -9,6 +9,12 @@ namespace RembedPy {
   boost::python::list extract_argv_list(SEXP Rargv);
   boost::python::dict extract_argv_dict(SEXP Rargv);
   SEXP pycall(boost::python::object& callable, boost::python::list& argv_list, boost::python::dict& argv_dict);
+  
+  template<class T>
+  SEXP extract_to_R_single(boost::python::object& src) {
+    return Rcpp::wrap<T>(boost::python::extract<T>(src));
+  }
+  
 }
 
 #endif //__REMBEDPY_UTIL_H__
