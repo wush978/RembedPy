@@ -48,6 +48,9 @@ std::map< std::string , RembedPy::PyToRListConverter > RembedPy::ListConverterMa
 
 template<>
 SEXP RembedPy::wrap_list_converter<wchar_t*, STRSXP>(boost::python::list& src) {
+#ifdef REMBEDPY_DEBUG
+  	Rprintf("wrap_list_converter\n");
+#endif
   	int n = boost::python::len(src);
   	std::vector< std::wstring > glue;
   	for(int i = 0;i < n;i++) {
@@ -58,6 +61,9 @@ SEXP RembedPy::wrap_list_converter<wchar_t*, STRSXP>(boost::python::list& src) {
   
 
 SEXP RembedPy::wrap_list(boost::python::object& src) {
+#ifdef REMBEDPY_DEBUG
+  	Rprintf("wrap_list\n");
+#endif
 	boost::python::list& src_list(*reinterpret_cast<boost::python::list*>(&src));
 	int n = boost::python::len(src_list);
 	if (n == 0) {
@@ -66,20 +72,20 @@ SEXP RembedPy::wrap_list(boost::python::object& src) {
 	
 	boost::python::object src_first(src_list[0]);
 	std::string src_list_type(RembedPy::get_type(src_first));
-	return RembedPy::PyTypeMapper.at(src_list_type)(src_list);
+	return RembedPy::ListConverterMapper.at(src_list_type)(src_list);
 }
 
-SEXP RembedPy::wrap_dict(boost::python::object& src) {
-	boost::python::dict& src_dict(*reinterpret_cast<boost::python::dict*>(&src));
-	int n = boost::python::len(src_dict);
-	if (n == 0) {
-		return R_NilValue;
-	}
-	
-	boost::python::object src_first(src_list[0]);
-	std::string src_list_type(RembedPy::get_type(src_first));
-	return RembedPy::PyTypeMapper.at(src_list_type)(src_list);
-}
+//SEXP RembedPy::wrap_dict(boost::python::object& src) {
+//	boost::python::dict& src_dict(*reinterpret_cast<boost::python::dict*>(&src));
+//	int n = boost::python::len(src_dict);
+//	if (n == 0) {
+//		return R_NilValue;
+//	}
+//	
+//	boost::python::object src_first(src_list[0]);
+//	std::string src_list_type(RembedPy::get_type(src_first));
+//	return RembedPy::PyTypeMapper.at(src_list_type)(src_list);
+//}
 
 
 void init_PyTypeMapper() {
@@ -93,7 +99,7 @@ void init_PyTypeMapper() {
 	RembedPy::PyTypeMapper["bool"] = RembedPy::wrap<bool>;
 	RembedPy::PyTypeMapper["float"] = RembedPy::wrap<double>;
 	RembedPy::PyTypeMapper["list"] = RembedPy::wrap_list;
-	RembedPy::PyTypeMapper["dict"] = RembedPy::wrap_dict;
+//	RembedPy::PyTypeMapper["dict"] = RembedPy::wrap_dict;
 	
 	RembedPy::ListConverterMapper["int"] = RembedPy::wrap_list_converter<int, INTSXP>;
 	RembedPy::ListConverterMapper["long"] = RembedPy::wrap_list_converter<long, INTSXP>;
