@@ -11,5 +11,8 @@ pyscript <- function(script) {
 #'@export
 pycall <- function(fun_name, ..., module_name = "__main__") {
 	argv <- check_argv(list(...))
- 	new("py-ptr", .Call("RembedPy__pycall", module_name, fun_name, argv$list, argv$dict))
-}
+ 	new("py-ptr", {
+     ptr <- .Call("RembedPy__pycall", module_name, fun_name, argv$list, argv$dict)
+     if (is.null(ptr)) stop("pycall failed")
+     ptr
+ 	})}
