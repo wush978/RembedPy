@@ -1,5 +1,6 @@
 exportClasses("py-ptr")
 export(.Last.lib)
 export(pycall)
+export(pyobj)
 export(pyscript)
 useDynLib(RembedPy)
