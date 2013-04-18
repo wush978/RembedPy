@@ -17,9 +17,9 @@ RcppExport SEXP RembedPy__method(SEXP Rppy_obj, SEXP Rmethod_name, SEXP Rargv_li
   BEGIN_REMBEDPY
   PyObjPtr ppy_obj(Rppy_obj);
   std::string method_name(Rcpp::as<std::string>(Rmethod_name));
-  boost::python::list argv_list(extract_argv_list(Rargv_list));
-  boost::python::dict argv_dict(extract_argv_dict(Rargv_dict));
+  boost::python::list argv_list(RembedPy::extract_argv_list(Rargv_list));
+  boost::python::dict argv_dict(RembedPy::extract_argv_dict(Rargv_dict));
   boost::python::object callable(ppy_obj->attr(method_name.c_str()));
-  return pycall(callable, argv_list, argv_dict);
+  return RembedPy::pycall(callable, argv_list, argv_dict);
   END_REMBEDPY
 }
