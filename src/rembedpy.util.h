@@ -15,6 +15,9 @@ namespace RembedPy {
     return Rcpp::wrap<T>(boost::python::extract<T>(src));
   }
   
+  inline const char* get_type(boost::python::object& src) {
+    return boost::python::extract<char*>(src.attr("__class__").attr("__name__"));
+  }
 }
 
 #endif //__REMBEDPY_UTIL_H__

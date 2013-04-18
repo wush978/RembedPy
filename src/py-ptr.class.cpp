@@ -27,7 +27,8 @@ RcppExport SEXP RembedPy__method(SEXP Rppy_obj, SEXP Rmethod_name, SEXP Rargv_li
 RcppExport SEXP RembedPy__gettype(SEXP Rppy_obj) {
   BEGIN_REMBEDPY
   boost::python::object& py_obj(*PyObjPtr(Rppy_obj));
-  return Rcpp::wrap<std::string>(boost::python::extract<std::string>(py_obj.attr("__class__").attr("__name__")));
+  Rcpp::CharacterVector retval(RembedPy::get_type(py_obj));
+  return retval;
   END_REMBEDPY
 }
 
@@ -36,5 +37,12 @@ RcppExport SEXP RembedPy__getattr(SEXP Rppy_obj, SEXP Rattr_name) {
   std::string attr_name(Rcpp::as<std::string>(Rattr_name));
   boost::python::object& py_obj(*PyObjPtr(Rppy_obj));
   return PyObjPtr(new boost::python::object(py_obj.attr(attr_name.c_str())));
+  END_REMBEDPY
+}
+
+RcppExport SEXP RembedPy__toR(SEXP Rppy_obj) {
+  BEGIN_REMBEDPY
+  boost::python::object& py_obj(*PyObjPtr(Rppy_obj));
+  
   END_REMBEDPY
 }
