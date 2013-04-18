@@ -1,4 +1,5 @@
 #include "rembedpy.h"
+#include "rembedpy.util.h"
 
 RcppExport SEXP RembedPy__pyscript(SEXP Rscript) {
   BEGIN_REMBEDPY
@@ -6,19 +7,6 @@ RcppExport SEXP RembedPy__pyscript(SEXP Rscript) {
   ::PyRun_SimpleString(script.c_str());
   return R_NilValue;
   END_REMBEDPY
-}
-
-boost::python::list extract_argv(SEXP Rargv) {
-#ifdef REMBEDPY_DEBUG
-	Rprintf("extract_argv\n");
-#endif
-	Rcpp::List argv(Rargv);
-	boost::python::list retval;
-	for(int i = 0;i < argv.size();i++) {
-		PyObjPtr glue(Rcpp::wrap(Rcpp::S4(Rcpp::wrap(argv[i])).slot("ptr")));
-		retval.append(*glue);
-	}
-	return retval;
 }
 
 SEXP pycall(boost::python::object& callable, boost::python::list& argv) {
