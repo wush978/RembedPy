@@ -26,3 +26,12 @@ test_fun(1.5:10.5);gc()
 
 test_fun(TRUE);gc()
 test_fun(c(TRUE,FALSE,TRUE));gc()
+
+pyscript("
+def f(a,b):
+    print 'a:' + str(a)
+    print 'b:' + str(b)
+")
+
+pycall("f", 1L, 2L)
+pycall("f", a=1L, b=2L)
