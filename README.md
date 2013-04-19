@@ -10,7 +10,7 @@ For Ubuntu:
 - python-dev
 - pkg-config
 - r-base
-- Rcpp
+- Rcpp(>= 0.10.3)
 
 ## Getting Start
 
