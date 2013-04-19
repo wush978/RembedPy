@@ -47,14 +47,14 @@ std::map< std::string , RembedPy::PyToRConverter > RembedPy::PyTypeMapper;
 std::map< std::string , RembedPy::PyToRListConverter > RembedPy::ListConverterMapper;
 
 template<>
-SEXP RembedPy::wrap_list_converter<wchar_t*, STRSXP>(boost::python::list& src) {
+SEXP RembedPy::wrap_list_converter<std::wstring, STRSXP>(boost::python::list& src) {
 #ifdef REMBEDPY_DEBUG
   	Rprintf("wrap_list_converter\n");
 #endif
   	int n = boost::python::len(src);
   	std::vector< std::wstring > glue;
   	for(int i = 0;i < n;i++) {
-  		glue.push_back(std::wstring(boost::python::extract<wchar_t*>(src[i])));
+  		glue.push_back(std::wstring(boost::python::extract<std::wstring>(src[i])));
   	}
   	return Rcpp::wrap(glue);
   }
@@ -113,7 +113,7 @@ void init_PyTypeMapper() {
 	RembedPy::ListConverterMapper["int"] = RembedPy::wrap_list_converter<int, INTSXP>;
 	RembedPy::ListConverterMapper["long"] = RembedPy::wrap_list_converter<long, INTSXP>;
 	RembedPy::ListConverterMapper["str"] = RembedPy::wrap_list_converter<char*, STRSXP>;
-	RembedPy::ListConverterMapper["unicode"] = RembedPy::wrap_list_converter<wchar_t*, STRSXP>;
+	RembedPy::ListConverterMapper["unicode"] = RembedPy::wrap_list_converter<std::wstring, STRSXP>;
 	RembedPy::ListConverterMapper["bool"] = RembedPy::wrap_list_converter<bool, LGLSXP>;
 	RembedPy::ListConverterMapper["float"] = RembedPy::wrap_list_converter<double, REALSXP>;
 
@@ -126,6 +126,26 @@ RcppExport SEXP RembedPy__toR(SEXP Rppy_obj) {
   std::string py_obj_type(RembedPy::get_type(py_obj));
   try {
   	return RembedPy::PyTypeMapper.at(py_obj_type)(py_obj);
+  }
+  catch (std::out_of_range& e) {
+  	throw std::out_of_range("unsupported python type!");
+  }
+  END_REMBEDPY
+}
+
+RcppExport SEXP RembedPy__toR_list(SEXP Rppy_obj) {
+  BEGIN_REMBEDPY
+  init_PyTypeMapper();
+  boost::python::list& src_list(*reinterpret_cast<boost::python::list*>(&(*PyObjPtr(Rppy_obj))));
+  try {
+    Rcpp::List retval;
+    int n = boost::python::len(src_list);
+    for(int i = 0;i < n;i++) {
+      boost::python::object py_obj(src_list[i]);
+      std::string py_obj_type(RembedPy::get_type(py_obj));
+      retval.push_back(RembedPy::PyTypeMapper.at(py_obj_type)(py_obj));
+    }
+    return retval;  
   }
   catch (std::out_of_range& e) {
   	throw std::out_of_range("unsupported python type!");

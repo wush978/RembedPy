@@ -50,7 +50,7 @@ namespace RembedPy {
   }
   
   template<>
-  SEXP wrap_list_converter<wchar_t*, STRSXP>(boost::python::list& src);
+  SEXP wrap_list_converter<std::wstring, STRSXP>(boost::python::list& src);
 
   typedef SEXP (*PyToRDictConverter)(boost::python::dict&);
 //  extern std::map< std::string , PyToRListConverter > DictConverterMapper;

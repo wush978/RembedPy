@@ -62,3 +62,18 @@ setMethod("show",
     cat(sprintf("A python object of python type: \"%s\"\n", .Call("RembedPy__gettype", object@ptr)))
   }
 )
+
+setMethod("as.list",
+  signature(x = "py-ptr"),
+  function (x, ...) 
+  {
+    x.type <- .Call("RembedPy__gettype", x@ptr)
+    if (x.type == "list") {
+      retval <- .Call("RembedPy__toR_list", x@ptr)
+    } else {
+      retval <- .Call("RembedPy__toR", x@ptr)
+      if (!is.list(retva)) retval <- list(retval)
+    }
+    return(retval)
+  }
+)
