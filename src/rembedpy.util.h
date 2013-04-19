@@ -22,9 +22,6 @@ namespace RembedPy {
 	typedef SEXP (*PyToRConverter)(boost::python::object&);
 	extern std::map< std::string , PyToRConverter > PyTypeMapper;
 	
-	typedef SEXP (*PyToRListConverter)(boost::python::list&);
-	extern std::map< std::string , PyToRListConverter > ListConverterMapper;
-  
   template<class T>
   SEXP wrap(boost::python::object& src) {
 #ifdef REMBEDPY_DEBUG
@@ -33,8 +30,10 @@ namespace RembedPy {
   	return Rcpp::wrap<T>(boost::python::extract<T>(src));
   }
   
+  typedef SEXP (*PyToRListConverter)(boost::python::list&);
+	extern std::map< std::string , PyToRListConverter > ListConverterMapper;
+  
   SEXP wrap_list(boost::python::object& src);
-  //SEXP wrap_dict(boost::python::object& src);
   
   template<class T, int RTYPE>
   SEXP wrap_list_converter(boost::python::list& src) {
@@ -52,6 +51,11 @@ namespace RembedPy {
   
   template<>
   SEXP wrap_list_converter<wchar_t*, STRSXP>(boost::python::list& src);
+
+  typedef SEXP (*PyToRDictConverter)(boost::python::dict&);
+//  extern std::map< std::string , PyToRListConverter > DictConverterMapper;
+  
+  SEXP wrap_dict(boost::python::object& src);
   
 }
 

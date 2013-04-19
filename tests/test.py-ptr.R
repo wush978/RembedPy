@@ -19,3 +19,11 @@ a[]
 pyscript("a = [1,2,3]")
 a <- pyobj("a")
 a[]
+
+pyscript("a = {'a':1,'b':'str','c':2.0}")
+a <- pyobj("a")
+a[]
+
+pyscript("a = {'a':1,'b':'str','c':[1,2,3]}")
+a <- pyobj("a")
+a[]

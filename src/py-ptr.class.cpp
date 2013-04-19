@@ -75,17 +75,26 @@ SEXP RembedPy::wrap_list(boost::python::object& src) {
 	return RembedPy::ListConverterMapper.at(src_list_type)(src_list);
 }
 
-//SEXP RembedPy::wrap_dict(boost::python::object& src) {
-//	boost::python::dict& src_dict(*reinterpret_cast<boost::python::dict*>(&src));
-//	int n = boost::python::len(src_dict);
-//	if (n == 0) {
-//		return R_NilValue;
-//	}
-//	
-//	boost::python::object src_first(src_list[0]);
-//	std::string src_list_type(RembedPy::get_type(src_first));
-//	return RembedPy::PyTypeMapper.at(src_list_type)(src_list);
-//}
+SEXP RembedPy::wrap_dict(boost::python::object& src) {
+  boost::python::dict& src_dict(*reinterpret_cast<boost::python::dict*>(&src));
+	int n = boost::python::len(src_dict);
+#ifdef REMBEDPY_DEBUG
+  Rprintf("wrap_dict(len: %d)\n", n);
+#endif
+	if (n == 0) {
+		return R_NilValue;
+	}
+	
+  boost::python::list src_key(src_dict.keys());
+  Rcpp::List retval;
+  for(int i = 0;i < n;i++) {
+    std::string key(boost::python::extract<std::string>(src_key[i]));
+    boost::python::object py_obj(src_dict[key]);
+    std::string py_obj_type(RembedPy::get_type(py_obj));
+    retval[key] = RembedPy::PyTypeMapper.at(py_obj_type)(py_obj);
+  }
+  return retval;
+}
 
 
 void init_PyTypeMapper() {
@@ -99,7 +108,7 @@ void init_PyTypeMapper() {
 	RembedPy::PyTypeMapper["bool"] = RembedPy::wrap<bool>;
 	RembedPy::PyTypeMapper["float"] = RembedPy::wrap<double>;
 	RembedPy::PyTypeMapper["list"] = RembedPy::wrap_list;
-//	RembedPy::PyTypeMapper["dict"] = RembedPy::wrap_dict;
+	RembedPy::PyTypeMapper["dict"] = RembedPy::wrap_dict;
 	
 	RembedPy::ListConverterMapper["int"] = RembedPy::wrap_list_converter<int, INTSXP>;
 	RembedPy::ListConverterMapper["long"] = RembedPy::wrap_list_converter<long, INTSXP>;
