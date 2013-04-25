@@ -47,14 +47,14 @@ std::map< std::string , RembedPy::PyToRConverter > RembedPy::PyTypeMapper;
 std::map< std::string , RembedPy::PyToRListConverter > RembedPy::ListConverterMapper;
 
 template<>
-SEXP RembedPy::wrap_list_converter<std::wstring, STRSXP>(boost::python::list& src) {
+SEXP RembedPy::wrap_list_converter<std::string, STRSXP>(boost::python::list& src) {
 #ifdef REMBEDPY_DEBUG
   	Rprintf("wrap_list_converter\n");
 #endif
   	int n = boost::python::len(src);
-  	std::vector< std::wstring > glue;
+  	std::vector< std::string > glue;
   	for(int i = 0;i < n;i++) {
-  		glue.push_back(std::wstring(boost::python::extract<std::wstring>(src[i])));
+  		glue.push_back(std::string(boost::python::extract<std::string>(src[i])));
   	}
   	return Rcpp::wrap(glue);
   }
@@ -104,7 +104,7 @@ void init_PyTypeMapper() {
 	RembedPy::PyTypeMapper["int"] = RembedPy::wrap<int>;
 	RembedPy::PyTypeMapper["long"] = RembedPy::wrap<long>;
 	RembedPy::PyTypeMapper["str"] = RembedPy::wrap<std::string>;
-	RembedPy::PyTypeMapper["unicode"] = RembedPy::wrap<std::wstring>;
+	RembedPy::PyTypeMapper["unicode"] = RembedPy::wrap<std::string>;
 	RembedPy::PyTypeMapper["bool"] = RembedPy::wrap<bool>;
 	RembedPy::PyTypeMapper["float"] = RembedPy::wrap<double>;
 	RembedPy::PyTypeMapper["list"] = RembedPy::wrap_list;
@@ -113,7 +113,7 @@ void init_PyTypeMapper() {
 	RembedPy::ListConverterMapper["int"] = RembedPy::wrap_list_converter<int, INTSXP>;
 	RembedPy::ListConverterMapper["long"] = RembedPy::wrap_list_converter<long, INTSXP>;
 	RembedPy::ListConverterMapper["str"] = RembedPy::wrap_list_converter<char*, STRSXP>;
-	RembedPy::ListConverterMapper["unicode"] = RembedPy::wrap_list_converter<std::wstring, STRSXP>;
+	RembedPy::ListConverterMapper["unicode"] = RembedPy::wrap_list_converter<std::string, STRSXP>;
 	RembedPy::ListConverterMapper["bool"] = RembedPy::wrap_list_converter<bool, LGLSXP>;
 	RembedPy::ListConverterMapper["float"] = RembedPy::wrap_list_converter<double, REALSXP>;
 
@@ -150,5 +150,12 @@ RcppExport SEXP RembedPy__toR_list(SEXP Rppy_obj) {
   catch (std::out_of_range& e) {
   	throw std::out_of_range("unsupported python type!");
   }
+  END_REMBEDPY
+}
+
+RcppExport SEXP RembedPy__toR_character(SEXP Rppy_obj) {
+  BEGIN_REMBEDPY
+  boost::python::object& py_obj(*PyObjPtr(Rppy_obj));
+  return Rcpp::wrap< std::string >(boost::python::extract<std::string>(py_obj));  
   END_REMBEDPY
 }

@@ -77,3 +77,17 @@ setMethod("as.list",
     return(retval)
   }
 )
+
+setMethod("as.character",
+  signature(x = "py-ptr"),
+  function (x, ...) 
+  {
+    x.type <- .Call("RembedPy__gettype", x@ptr)
+    if (x.type == "str") {
+      retval <- .Call("RembedPy__toR", x@ptr)
+    } else {
+      retval <- .Call("RembedPy__toR_character", x@ptr)
+    }
+    return(retval)
+  }
+)
