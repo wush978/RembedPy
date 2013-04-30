@@ -1,3 +1,8 @@
+/**
+ * Author: Wush Wu
+ * Copyright (c) Bridgewell Inc.
+ */
+
 #include "rembedpy.util.h"
 
 namespace RembedPy {

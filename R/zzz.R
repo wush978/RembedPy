@@ -1,3 +1,8 @@
+# 
+# Author: Wush Wu
+# Copyright (c) Bridgewell Inc.
+#  
+
 #'@useDynLib RembedPy
 .onAttach <- function(libname, pkgname) {
   .Call("RembedPy__initialize")

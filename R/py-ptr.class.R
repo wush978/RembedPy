@@ -1,3 +1,8 @@
+# 
+# Author: Wush Wu
+# Copyright (c) Bridgewell Inc.
+#  
+
 #'@exportClass py-ptr
 setClass(
   "py-ptr",

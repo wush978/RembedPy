@@ -1,3 +1,8 @@
+# 
+# Author: Wush Wu
+# Copyright (c) Bridgewell Inc.
+#  
+
 check_argv <- function(argv) {
   argv <- sapply(argv, function(a) {
     if (class(a)[1] == "py-ptr")

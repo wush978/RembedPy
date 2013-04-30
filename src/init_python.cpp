@@ -1,3 +1,9 @@
+/**
+ * Author: Wush Wu
+ * Copyright (c) Bridgewell Inc.
+ */
+
+
 #ifndef WIN32
 #include <dlfcn.h>
 #endif

@@ -1,3 +1,8 @@
+# 
+# Author: Wush Wu
+# Copyright (c) Bridgewell Inc.
+#  
+
 #'@export
 pyscript <- function(script) {
   stopifnot(class(script) == "character")

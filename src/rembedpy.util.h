@@ -1,3 +1,7 @@
+/**
+ * Author: Wush Wu
+ * Copyright (c) Bridgewell Inc.
+ */
 
 #ifndef __REMBEDPY_UTIL_H__
 #define __REMBEDPY_UTIL_H__
