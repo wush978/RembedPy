@@ -51,8 +51,10 @@ RcppExport SEXP RembedPy__getattr(SEXP Rppy_obj, SEXP Rattr_name) {
 std::map< std::string , RembedPy::PyToRConverter > RembedPy::PyTypeMapper;
 std::map< std::string , RembedPy::PyToRListConverter > RembedPy::ListConverterMapper;
 
-template<>
-SEXP RembedPy::wrap_list_converter<std::string, STRSXP>(boost::python::list& src) {
+namespace RembedPy {
+  
+  template<>
+  SEXP wrap_list_converter<std::string, STRSXP>(boost::python::list& src) {
 #ifdef REMBEDPY_DEBUG
   	Rprintf("wrap_list_converter\n");
 #endif
@@ -63,6 +65,7 @@ SEXP RembedPy::wrap_list_converter<std::string, STRSXP>(boost::python::list& src
   	}
   	return Rcpp::wrap(glue);
   }
+}
   
 
 SEXP RembedPy::wrap_list(boost::python::object& src) {
